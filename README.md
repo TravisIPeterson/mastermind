@@ -1,0 +1,1 @@
+Human vs computer Mastermind game, playable using the command line. Programmed using Ruby. Project for The Odin Project [https://www.theodinproject.com/lessons/ruby-mastermind]
