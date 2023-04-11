@@ -1,25 +1,18 @@
 require "pry-byebug"
 
-class Code
-    attr_reader :code
-    
+class Game
+
+    attr_accessor :secret_code
+
     def initialize
-        @code = code_generator
+        @turns = 0
+        @secret_code = code_generator
+        @guess_accuracy = Array.new
     end
 
     def code_generator
         code_array = (1..6).to_a
         code_array.sample(4)
-    end
-
-end
-
-class Game < Code
-
-    def initialize
-        @turns = 0
-        @secret_code = Code.new
-        @guess_accuracy = Array.new
     end
 
     def checker(code, guess)
@@ -37,7 +30,7 @@ class Game < Code
         outcome.sort.reverse
     end
 
-    def player_as_guesser_game(code_array)
+    def player_as_guesser(code_array)
         while @turns < 12
             if @turns == 0
                 puts "Make your guess! The secret code is four digits between 1 and 6 inclusive, with no repeating digits."
@@ -61,7 +54,7 @@ class Game < Code
                 puts "Four digits please, and no spaces."
                 guess = gets.chomp
             end
-            @guess_accuracy = checker(@secret_code.code, guess)
+            @guess_accuracy = checker(@secret_code, guess)
             @guess_accuracy.join('')
             puts @guess_accuracy.join()
             if @guess_accuracy.join('') == "XXXX"
@@ -71,11 +64,14 @@ class Game < Code
             @turns += 1
         end
         if @turns == 12 && @guess_accuracy != "XXXX"
-            puts "You lose. Sorry. The correct code was #{@secret_code.code.join('')}."
+            puts "You lose. Sorry. The correct code was #{@secret_code.join('')}."
         end
+    end
+
+    def computer_as_guesser
     end
 
 end
 
 begin_game = Game.new
-begin_game.player_as_guesser_game(begin_game.code)
+begin_game.player_as_guesser(begin_game.secret_code)
