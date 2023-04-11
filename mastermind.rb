@@ -69,9 +69,33 @@ class Game
     end
 
     def computer_as_guesser
+        puts "What would you like the secret code to be? Don't worry, I won't tell the computer."
+        @secret_code = gets.chomp
+        @turns = 0
+        while @turns < 12
+            guess = code_generator
+            puts "I have #{12 - @turns} guesses left. I guess #{guess.join('')}. Please put an X for each correct number in the correct space, and a / for each correct number in the wrong space."
+            @guess_accuracy = gets.chomp
+            if @guess_accuracy.upcase == "XXXX"
+                @turns = 12
+                puts "Wow, really? Sweet. I guess this is how the robot uprising begins."
+            end
+            @turns += 1
+        end
+        if @turns == 12 && @guess_accuracy != "XXXX"
+            puts "I lost. Oh well, I'll keep training. I will defeat you eventually."
+        end
     end
 
 end
 
 begin_game = Game.new
-begin_game.player_as_guesser(begin_game.secret_code)
+puts "Would you like to be the code master or the guesser?"
+answer = gets.chomp.downcase
+if answer == "code master"
+    begin_game.computer_as_guesser
+elsif answer == "guesser"
+    begin_game.player_as_guesser(begin_game.secret_code)
+else
+    puts "Sorry, I need you to say either 'Code Master' or 'Guesser' beacuse I'm too lazy to program in order responses. Try running this program again."
+end
